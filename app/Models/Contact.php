@@ -22,34 +22,29 @@ class Contact extends Model
     protected static function boot(){
     	parent::boot();
         self::created(function($model){
-        	$client = new Klaviyo('pk_9d624182dee30ae5c47955fdc2cbc113da', 'XmSfUz');
-
-			$profile = new KlaviyoProfile(
-			    array(
-			        '$email' => $model->email,
-			        '$first_name' => $model->first_name,
-			        '$phone_number' => $model->phone
-			    )
-			);
-
-			$client->publicAPI->identify( $profile, true );
+        	self::create_profile($model);
 
         });
 
         self::updated(function($model){
-        	$client = new Klaviyo('pk_9d624182dee30ae5c47955fdc2cbc113da', 'XmSfUz');
-
-			$profile = new KlaviyoProfile(
-			    array(
-			        '$email' => $model->email,
-			        '$first_name' => $model->first_name,
-			        '$phone_number' => $model->phone
-			    )
-			);
-
-			$client->publicAPI->identify( $profile, true );
-
+            self::create_profile($model);  
         });
+    }
+
+    protected static function create_profile($model){
+        $client = new Klaviyo('pk_9d624182dee30ae5c47955fdc2cbc113da', 'XmSfUz');
+
+        $profile = new KlaviyoProfile(
+            array(
+                '$email' => $model->email,
+                '$first_name' => $model->first_name,
+                '$phone_number' => $model->phone
+            )
+        );
+
+        $client->publicAPI->identify( $profile, true );
+
+        return; 
     }
 
     public function user(){

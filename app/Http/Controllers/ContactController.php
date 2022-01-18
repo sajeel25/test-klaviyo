@@ -24,7 +24,7 @@ class ContactController extends Controller
 
     public function create(Request $request){
     	// check if email exists
-    	$contact = Contact::where(['email' => $request->email, 'user_id' => auth()::user()->id])->first();
+    	$contact = Contact::where(['email' => $request->email, 'user_id' => auth()->user()->id])->first();
     	if(!$contact){
     		$contact =  new Contact;
     	}
