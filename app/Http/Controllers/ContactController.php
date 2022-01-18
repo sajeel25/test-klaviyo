@@ -25,8 +25,10 @@ class ContactController extends Controller
     public function create(Request $request){
     	// check if email exists
     	$contact = Contact::where(['email' => $request->email, 'user_id' => auth()->user()->id])->first();
+        $msg = 'updated';
     	if(!$contact){
     		$contact =  new Contact;
+            $msg = 'created';
     	}
     	$contact->user_id = auth()->user()->id;
     	$contact->first_name = $request->first_name;
@@ -34,7 +36,7 @@ class ContactController extends Controller
     	$contact->phone = $request->phone;
     	$contact->save();
 
-    	return redirect()->back()->with('successmsg', 'Contact successfully created.');
+    	return redirect()->back()->with('successmsg', 'Contact successfully '.$msg);
     }
 
     public function uploadSampleFile(Request $request){
